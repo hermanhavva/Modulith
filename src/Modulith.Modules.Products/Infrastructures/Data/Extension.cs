@@ -12,9 +12,9 @@ public static class Extension
     {
         var connString = configuration.GetConnectionString("ProductDb");
         Guard.Against.NullOrEmpty(connString);
-        services.AddAppDbContext<ProductDbContext>(
+        services.AddAppDbContext<ProductDbContext>(  // this is the last where the breakpoint enters
             connString,
-            ProductDbContextModel.Instance,
+            null,
             svc => svc.AddRepository(typeof(ProductRepository<>))
         ).AddDatabaseDeveloperPageExceptionFilter();
     }

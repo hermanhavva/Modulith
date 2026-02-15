@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Modulith.Modules.Products.Domain.CategoryAggregate;
 using Modulith.Modules.Products.Domain.ProductAggregate;
+using Modulith.Modules.Products.Infrastructures.Data.Configurations;
 using Modulith.Persistence;
 using Modulith.Persistence.Constants;
 using SmartEnum.EFCore;
@@ -18,6 +19,6 @@ public sealed class ProductDbContext(DbContextOptions options) : ApplicationDbCo
         base.OnModelCreating(modelBuilder);
         modelBuilder.ConfigureSmartEnum();
         modelBuilder.HasPostgresExtension(UniqueId.UUID_EXTENSION);
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        new ProductConfiguration().Configure(modelBuilder.Entity<Product>()); // changed
     }
 }

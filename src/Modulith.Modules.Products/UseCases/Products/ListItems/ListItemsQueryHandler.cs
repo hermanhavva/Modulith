@@ -19,8 +19,17 @@ public sealed class ListItemsQueryHandler(IReadRepository<Product> repository)
             request.OrderBy,
             request.Search
         );
-
-        var entities = await repository.ListAsync(spec, cancellationToken);
+        List<Product> entities = new List<Product>();
+        try
+        {
+            entities = await repository.ListAsync(spec, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message, ex.Data, ex.StackTrace);
+            throw;
+        }
+        
         var totalRecords = await repository.CountAsync(cancellationToken);
         var totalPages = (int)Math.Ceiling(totalRecords / (double)request.PageSize);
         PagedInfo pageInfo = new(request.PageIndex, request.PageSize, totalPages, totalRecords);
